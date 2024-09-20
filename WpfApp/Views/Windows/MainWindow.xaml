@@ -58,46 +58,7 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
-            <TabItem Header="Test Data" Height="20" VerticalAlignment="Top">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-
-                    <GroupBox>
-                        <GroupBox.Header>
-                            <TextBlock Text="Elements"/>
-                        </GroupBox.Header>
-                        <GroupBox.Resources>
-                            <ResourceDictionary>
-                                <ResourceDictionary.MergedDictionaries>
-                                    <ResourceDictionary Source="../../Resources/DataTemplates/DataTemplates1.xaml" />
-                                </ResourceDictionary.MergedDictionaries>
-                            </ResourceDictionary>
-                        </GroupBox.Resources>
-                        <ListBox ItemsSource="{Binding CompositeCollection}"
-                             SelectedItem="{Binding SelectedCompositeValue}">
-                            <!--<ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>-->
-                        </ListBox>
-                    </GroupBox>
-
-                    <GroupBox Grid.Column="1">
-                        <GroupBox.Header>
-                            <TextBlock Text="Chosen Element"/>
-                        </GroupBox.Header>
-                        <ContentControl Content="{Binding SelectedCompositeValue}"/>
-                        <GroupBox.Resources>
-                            <ResourceDictionary Source="../../Resources/DataTemplates/DataTemplates2.xaml" />
-                        </GroupBox.Resources>
-                    </GroupBox>
-                </Grid>
-            </TabItem>
-            <TabItem Header="График">
+            <TabItem Header="График" Visibility="Collapsed">
                 <oxy:Plot>
                     <oxy:Plot.Axes>
                         <oxy:LinearAxis Position="Left"/>
@@ -108,7 +69,7 @@
                                     DataFieldX="XValue" DataFieldY="YValue"/>
                 </oxy:Plot>
             </TabItem>
-            <TabItem Header="Группы" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
+            <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
@@ -116,6 +77,11 @@
                     </Grid.ColumnDefinitions>
                     <GroupBox Header="Groups" Grid.Row="0" Grid.Column="0">
                         <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" Margin="0,3">
+                                <!--<TextBlock Text="Filter"/>-->
+                                <fa5:ImageAwesome Height="12" Icon="Solid_Search" Margin="3,0"/>
+                                <TextBox/>
+                            </DockPanel>
                             <UniformGrid DockPanel.Dock="Bottom" Rows="1" Margin="0,3">
                                 <UniformGrid.Resources>
                                 </UniformGrid.Resources>
@@ -143,44 +109,48 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
                         </DockPanel>
-
-
                     </GroupBox>
                     <GroupBox Header="{Binding SelectedGroup.Name, FallbackValue='Students', TargetNullValue='Group is not chosen'}"               
                               Grid.Row="0" Grid.Column="1">
-                        <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
-                                  AutoGenerateColumns="False"
-                                  CanUserAddRows="True"
-                                  GridLinesVisibility="Vertical"
-                                  VerticalGridLinesBrush="DarkGray"
-                                  AlternatingRowBackground="LightGray">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" />
-                                <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
-                                <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" />
-                                <!--<DataGridTextColumn Header="Date of birth" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}" />-->
-                                <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
-                                <!--<DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid }}"/>-->
-                                <DataGridTemplateColumn Header="Date of Birth">
-                                    <!--<DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="university:Student">
-                                            <DatePicker SelectedDate="{Binding Birthday}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>-->
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate DataType="university:Student">
-                                            <TextBlock Text="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                    <DataGridTemplateColumn.CellEditingTemplate>
-                                        <DataTemplate DataType="university:Student">
-                                            <DatePicker SelectedDate="{Binding Birthday}"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellEditingTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Notes" Binding="{Binding Description}" Width="*" />
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <DockPanel>
+                            <DockPanel DockPanel.Dock="Top" Margin="0,3">
+                                <fa5:ImageAwesome Height="12" Icon="Solid_Search" Margin="3,0"/>
+                                <TextBox/>
+                            </DockPanel>
+                            <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
+                                      AutoGenerateColumns="False"
+                                      CanUserAddRows="True"
+                                      GridLinesVisibility="Vertical"
+                                      VerticalGridLinesBrush="DarkGray"
+                                      AlternatingRowBackground="LightGray">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" />
+                                    <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
+                                    <DataGridTextColumn Header="Patronymic" Binding="{Binding Patronymic}" />
+                                    <!--<DataGridTextColumn Header="Date of birth" Binding="{Binding Birthday, StringFormat=dd.MM.yyyy}" />-->
+                                    <DataGridTextColumn Header="Rating" Binding="{Binding Rating}" />
+                                    <!--<DataGridTextColumn Header="Group" Binding="{Binding DataContext.SelectedGroup.Name, RelativeSource={RelativeSource AncestorType=DataGrid }}"/>-->
+                                    <DataGridTemplateColumn Header="Date of Birth">
+                                        <!--<DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="university:Student">
+                                                <DatePicker SelectedDate="{Binding Birthday}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>-->
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate DataType="university:Student">
+                                                <TextBlock Text="{Binding Birthday, StringFormat=dd.MM.yyyy}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                        <DataGridTemplateColumn.CellEditingTemplate>
+                                            <DataTemplate DataType="university:Student">
+                                                <DatePicker SelectedDate="{Binding Birthday}"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellEditingTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Notes" Binding="{Binding Description}" Width="*" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DockPanel>
                     </GroupBox>
                 </Grid>
 
@@ -216,60 +186,7 @@
                               HorizontalAlignment="Right" Width="4"/>
                 </Grid>-->
             </TabItem>
-            <TabItem Header="Button">
-                <Button 
-                        VerticalAlignment="Top" HorizontalAlignment="Left"
-                        Margin="50,50" Padding="14,15" Width="110"
-                        Style="{StaticResource CheckButtonStyle}"
-                        RenderTransformOrigin="0.5,0.5"
-                        Content="TEST">
-                    <Button.Background>
-                        <SolidColorBrush Color="White" x:Name="ButtonBrush" />
-                    </Button.Background>
-                    <Button.RenderTransform>
-                        <RotateTransform x:Name="RotateButton"/>
-                    </Button.RenderTransform>
-                    <Button.Triggers>
-                        <EventTrigger RoutedEvent="Button.Click">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetName="RotateButton" 
-                                                     Storyboard.TargetProperty="Angle" 
-                                                     From="0" To="360"
-                                                     Duration="0:0:0.5"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Button.MouseEnter">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="ButtonBrush"
-                                                    Storyboard.TargetProperty="Color"
-                                                    Duration="0:0:1"
-                                                    To="Red"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                        <EventTrigger RoutedEvent="Button.MouseLeave">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation Storyboard.TargetName="ButtonBrush"
-                                                    Storyboard.TargetProperty="Color"
-                                                    Duration="0:0:3"
-                                                    To="White"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger>
-                    </Button.Triggers>
-                </Button>
-            </TabItem>
-            <TabItem Header="Вкладка 2">
-                <Button Content="Test" VerticalAlignment="Top" HorizontalAlignment="Left"
-                        Padding="20,10,20,10" Margin="10,10,10,10"
-                        Style="{StaticResource CheckButtonStyle}"/>
-            </TabItem>
-            <TabItem Header="Вкладка 3"></TabItem>
-            <TabItem Header="Вкладка 4"></TabItem>
+            
         </TabControl>
     </DockPanel>
 
