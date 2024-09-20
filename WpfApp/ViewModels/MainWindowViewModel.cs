@@ -174,9 +174,9 @@ namespace WpfApp.ViewModels
             var student_index = 1;
             var students = Enumerable.Range(1, 15).Select(i => new Student
             {
-                Name = $"Name {i}",
-                Surname = $"Surname {i}",
-                Patronymic = $"Patronymic {i}",
+                Name = $"Name {student_index}",
+                Surname = $"Surname {student_index}",
+                Patronymic = $"Patronymic {student_index++}",
                 Birthday = DateTime.Now,
                 Rating = 0
             });
