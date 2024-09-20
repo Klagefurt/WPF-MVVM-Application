@@ -62,7 +62,15 @@
                 <Grid>
                     <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
                     <ListBox HorizontalAlignment="Left" Width="200" 
-                             Margin="30" ItemsSource="{Binding students_test}" >
+                             Margin="30" ItemsSource="{Binding students_test}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.IsContainerVirtualizable="True">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -71,6 +79,9 @@
                         <ListBox.ItemTemplate >
                             <DataTemplate DataType="university:Student">
                                 <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="3" Padding="3">
+                                    <Border.CacheMode>
+                                        <BitmapCache RenderAtScale="4" />
+                                    </Border.CacheMode>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
                                         <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
@@ -150,7 +161,13 @@
                                       CanUserAddRows="True"
                                       GridLinesVisibility="Vertical"
                                       VerticalGridLinesBrush="DarkGray"
-                                      AlternatingRowBackground="LightGray">
+                                      AlternatingRowBackground="LightGray"
+                                      EnableRowVirtualization="True">
+                                <!--<DataGrid.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel/>
+                                    </ItemsPanelTemplate>
+                                </DataGrid.ItemsPanel>-->
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="Auto" />
                                     <DataGridTextColumn Header="Surname" Binding="{Binding Surname}" />
