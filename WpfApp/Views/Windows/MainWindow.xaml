@@ -20,7 +20,7 @@
     </Window.DataContext>
     <Window.Resources>
         <cac:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
-
+ 
 
     </Window.Resources>
     <DockPanel>
@@ -58,6 +58,30 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
+            <TabItem Header="Visualization Testing">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
+                    <ListBox HorizontalAlignment="Left" Width="200" 
+                             Margin="30" ItemsSource="{Binding students_test}" >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate >
+                            <DataTemplate DataType="university:Student">
+                                <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="3" Padding="3">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Patronymic, TargetNullValue=---}" ToolTip="{Binding Name}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>

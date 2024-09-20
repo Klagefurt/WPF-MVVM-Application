@@ -151,6 +151,14 @@ namespace WpfApp.ViewModels
 
         /*--------------------------------------------------------------*/
 
+        public IEnumerable<Student> students_test => 
+            Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(i => new Student
+            {
+                Name = $"Name {i}",
+                Surname = $"Surname {i}"
+            });
+
         public MainWindowViewModel()
         {
             Title = "New Application";
