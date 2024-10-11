@@ -1,11 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using OxyPlot;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using WpfApp.Infrastructure.Commands;
 using WpfApp.Models;
 using WpfApp.Models.University;
 using WpfApp.ViewModels.Base;
+using DataPoint = WpfApp.Models.DataPoint;
 
 namespace WpfApp.ViewModels
 {
@@ -24,7 +28,7 @@ namespace WpfApp.ViewModels
 
         #region SelectedCompositeValue
         private object _selectedCompositValue;
-        
+
         public object SelectedCompositeValue
         {
             get => _selectedCompositValue;
@@ -39,8 +43,52 @@ namespace WpfApp.ViewModels
         public Group SelectedGroup
         {
             get => _selectedGroup;
-            set => Set(ref _selectedGroup, value);
+            set
+            {
+                if (!Set(ref _selectedGroup, value)) return;
+                _selectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
         }
+        #endregion
+
+        #region StudentFilterText : string - Student filter text
+
+        private string _studentFilterText;
+        public string StudentFilterText
+        {
+            get => _studentFilterText;
+            set
+            {
+                if (!Set(ref _studentFilterText, value)) return;
+                _selectedGroupStudents.View.Refresh();
+            }
+        }
+        #endregion
+
+        #region SelectedGroupStudents
+        private readonly CollectionViewSource _selectedGroupStudents = new();
+        private void OnStudentsFiltered(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Student student))
+            {
+                e.Accepted = false;
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(_studentFilterText))
+                return;
+            if (student.Name == null || student.Surname == null || student.Patronymic == null)
+            {
+                e.Accepted = false;
+                return;
+            }
+            if (student.Name.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+            if (student.Surname.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+            if (student.Patronymic.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+
+            e.Accepted = false;
+        }
+        public ICollectionView SelectedGroupStudents => _selectedGroupStudents?.View;
         #endregion
 
         #region SelectedPageIndex
@@ -206,6 +254,11 @@ namespace WpfApp.ViewModels
 
             CompositeCollection = data_list.ToArray();
 
+            _selectedGroupStudents.Filter += OnStudentsFiltered;
+
+            //_selectedGroupStudents.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
+
+            //_selectedGroupStudents.GroupDescriptions.Add(new PropertyGroupDescription("Name"));
         }
     }
 }

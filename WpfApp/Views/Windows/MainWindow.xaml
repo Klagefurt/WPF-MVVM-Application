@@ -9,7 +9,7 @@
         xmlns:vm="clr-namespace:WpfApp.ViewModels"
         xmlns:cac="clr-namespace:WpfApp.Infrastructure.Commands"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
-        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime" xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="450" Width="800">
     <Window.InputBindings>
@@ -58,41 +58,6 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
-            <TabItem Header="Visualization Testing">
-                <Grid>
-                    <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
-                    <ListBox HorizontalAlignment="Left" Width="200" 
-                             Margin="30" ItemsSource="{Binding students_test}"
-                             VirtualizingPanel.IsVirtualizing="True"
-                             VirtualizingPanel.VirtualizationMode="Recycling"
-                             VirtualizingPanel.IsContainerVirtualizable="True">
-                        <ListBox.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel/>
-                            </ItemsPanelTemplate>
-                        </ListBox.ItemsPanel>
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate >
-                            <DataTemplate DataType="university:Student">
-                                <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="3" Padding="3">
-                                    <Border.CacheMode>
-                                        <BitmapCache RenderAtScale="4" />
-                                    </Border.CacheMode>
-                                    <StackPanel>
-                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
-                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
-                                        <TextBlock Text="{Binding Patronymic, TargetNullValue=---}" ToolTip="{Binding Name}"/>
-                                    </StackPanel>
-                                </Border>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </TabItem>
             <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -104,8 +69,14 @@
                             <DockPanel.Resources>
                                 <CollectionViewSource x:Key="GroupsCollection"
                                                       Source="{Binding Groups}" 
-                                                      Filter="GroupsCollection_Filter"
-                                                      />
+                                                      Filter="GroupsCollection_Filter">
+                                    <CollectionViewSource.SortDescriptions>
+                                        <!--<componentmodel:SortDescription PropertyName="Name" Direction="Descending"/>-->
+                                    </CollectionViewSource.SortDescriptions>
+                                    <CollectionViewSource.GroupDescriptions>
+                                        <PropertyGroupDescription PropertyName="Students.Count"/>
+                                    </CollectionViewSource.GroupDescriptions>
+                                </CollectionViewSource>
                             </DockPanel.Resources>
                             <DockPanel DockPanel.Dock="Top" Margin="0,3">
                                 <!--<TextBlock Text="Filter"/>-->
@@ -154,15 +125,18 @@
                         <DockPanel>
                             <DockPanel DockPanel.Dock="Top" Margin="0,3">
                                 <fa5:ImageAwesome Height="12" Icon="Solid_Search" Margin="3,0"/>
-                                <TextBox/>
+                                <TextBox Text="{Binding StudentFilterText, UpdateSourceTrigger=PropertyChanged}"/>
                             </DockPanel>
-                            <DataGrid ItemsSource="{Binding SelectedGroup.Students}" 
+                            <DataGrid ItemsSource="{Binding SelectedGroupStudents}" 
                                       AutoGenerateColumns="False"
                                       CanUserAddRows="True"
                                       GridLinesVisibility="Vertical"
                                       VerticalGridLinesBrush="DarkGray"
                                       AlternatingRowBackground="LightGray"
                                       EnableRowVirtualization="True">
+                                <!--<DataGrid.GroupStyle>
+                                    <GroupStyle/>
+                                </DataGrid.GroupStyle>-->
                                 <!--<DataGrid.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel/>
@@ -230,6 +204,76 @@
                     <GridSplitter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                               HorizontalAlignment="Right" Width="4"/>
                 </Grid>-->
+            </TabItem>
+            <TabItem Header="Visualization Testing" Visibility="Collapsed">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
+                    <ListBox HorizontalAlignment="Left" Width="200" 
+                             Margin="30" ItemsSource="{Binding students_test}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.IsContainerVirtualizable="True">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate >
+                            <DataTemplate DataType="university:Student">
+                                <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="3" Padding="3">
+                                    <Border.CacheMode>
+                                        <BitmapCache RenderAtScale="4" />
+                                    </Border.CacheMode>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Patronymic, TargetNullValue=---}" ToolTip="{Binding Name}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Visualization Testing" Visibility="Collapsed">
+                <Grid>
+                    <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
+                    <ListBox HorizontalAlignment="Left" Width="200" 
+                             Margin="30" ItemsSource="{Binding students_test}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling"
+                             VirtualizingPanel.IsContainerVirtualizable="True">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel/>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate >
+                            <DataTemplate DataType="university:Student">
+                                <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="3" Padding="3">
+                                    <Border.CacheMode>
+                                        <BitmapCache RenderAtScale="4" />
+                                    </Border.CacheMode>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Surname}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}" ToolTip="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Patronymic, TargetNullValue=---}" ToolTip="{Binding Name}"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </TabItem>
             <TabItem Header="График" Visibility="Collapsed">
                 <oxy:Plot>
