@@ -137,6 +137,19 @@ namespace WpfApp.ViewModels
         }
         #endregion
 
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("c:\\");
+
+        #region SelectedDirectory : DirectoryViewModel - selected directory
+
+        private DirectoryViewModel _selectedDirectory;
+        public DirectoryViewModel SelectedDirectory 
+        { 
+            get => _selectedDirectory; 
+            set => Set(ref _selectedDirectory, value);
+        }
+
+        #endregion
+
         /*--------------------------------------------------------------*/
 
         #region CreateGroupCommand

@@ -205,6 +205,39 @@
                               HorizontalAlignment="Right" Width="4"/>
                 </Grid>-->
             </TabItem>
+            <TabItem Header="File System">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Directories" Grid.Column="0">
+                        <!--<ListBox ItemsSource="{Binding DiskRootDir.DirectoryItems}"
+                                 DisplayMemberPath="Name"
+                                 SelectedItem="{Binding SelectedDirectory}"
+                                 SelectedIndex="0"/>-->
+                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}">
+                            <TreeView.ItemTemplate>
+                                <!--<DataTemplate DataType="vm:DirectoryViewModel" >
+                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}" />
+                                </DataTemplate>-->
+                                <HierarchicalDataTemplate DataType="vm:DirectoryViewModel"
+                                                          ItemsSource="{Binding DirectoryItems}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa5:ImageAwesome Height="12" Icon="Regular_Folder" 
+                                                          Foreground="Green" Margin="0,0,3,0"/>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.ItemTemplate>
+                            
+                        </TreeView>
+                    </GroupBox>
+                    <GroupBox Header="Files" Grid.Column="1">
+                        <ListBox ItemsSource="{Binding SelectedDirectory.Files}"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
             <TabItem Header="Visualization Testing" Visibility="Collapsed">
                 <Grid>
                     <TextBlock Text="{Binding Source={x:Static local:App.IsDesignMode}}"/>
