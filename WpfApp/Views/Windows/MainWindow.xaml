@@ -212,30 +212,28 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <GroupBox Header="Directories" Grid.Column="0">
-                        <!--<ListBox ItemsSource="{Binding DiskRootDir.DirectoryItems}"
-                                 DisplayMemberPath="Name"
-                                 SelectedItem="{Binding SelectedDirectory}"
-                                 SelectedIndex="0"/>-->
-                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}">
-                            <TreeView.ItemTemplate>
-                                <!--<DataTemplate DataType="vm:DirectoryViewModel" >
-                                    <TextBlock Text="{Binding Name}" ToolTip="{Binding CreationTime}" />
-                                </DataTemplate>-->
-                                <HierarchicalDataTemplate DataType="vm:DirectoryViewModel"
-                                                          ItemsSource="{Binding DirectoryItems}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa5:ImageAwesome Height="12" Icon="Regular_Folder" 
-                                                          Foreground="Green" Margin="0,0,3,0"/>
-                                        <TextBlock Text="{Binding Name}"/>
-                                    </StackPanel>
-                                </HierarchicalDataTemplate>
-                            </TreeView.ItemTemplate>
-                            
-                        </TreeView>
+                        <GroupBox.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
+                                                      ItemsSource="{Binding DirectoryItems}">
+                                <StackPanel Orientation="Horizontal">
+                                    <fa5:ImageAwesome Height="12" Icon="Regular_Folder" 
+                                                      Foreground="Green" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type vm:FileViewModel}">
+                                <StackPanel Orientation="Horizontal" ToolTip="{Binding CreationTime}">
+                                    <fa5:ImageAwesome Height="12" Icon="Regular_File"
+                                                      Foreground="Blue" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GroupBox.Resources>
+                        <TreeView ItemsSource="{Binding DiskRootDir.DirectoryItems}"/>
                     </GroupBox>
-                    <GroupBox Header="Files" Grid.Column="1">
+                    <!--<GroupBox Header="Files" Grid.Column="1">
                         <ListBox ItemsSource="{Binding SelectedDirectory.Files}"/>
-                    </GroupBox>
+                    </GroupBox>-->
                 </Grid>
             </TabItem>
             <TabItem Header="Visualization Testing" Visibility="Collapsed">
