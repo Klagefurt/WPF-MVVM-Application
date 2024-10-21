@@ -1,11 +1,15 @@
-﻿using System.Collections.ObjectModel;
+﻿using OxyPlot;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using WpfApp.Infrastructure.Commands;
 using WpfApp.Models;
 using WpfApp.Models.University;
 using WpfApp.ViewModels.Base;
+using DataPoint = WpfApp.Models.DataPoint;
 
 namespace WpfApp.ViewModels
 {
@@ -24,7 +28,7 @@ namespace WpfApp.ViewModels
 
         #region SelectedCompositeValue
         private object _selectedCompositValue;
-        
+
         public object SelectedCompositeValue
         {
             get => _selectedCompositValue;
@@ -39,8 +43,52 @@ namespace WpfApp.ViewModels
         public Group SelectedGroup
         {
             get => _selectedGroup;
-            set => Set(ref _selectedGroup, value);
+            set
+            {
+                if (!Set(ref _selectedGroup, value)) return;
+                _selectedGroupStudents.Source = value?.Students;
+                OnPropertyChanged(nameof(SelectedGroupStudents));
+            }
         }
+        #endregion
+
+        #region StudentFilterText : string - Student filter text
+
+        private string _studentFilterText;
+        public string StudentFilterText
+        {
+            get => _studentFilterText;
+            set
+            {
+                if (!Set(ref _studentFilterText, value)) return;
+                _selectedGroupStudents.View.Refresh();
+            }
+        }
+        #endregion
+
+        #region SelectedGroupStudents
+        private readonly CollectionViewSource _selectedGroupStudents = new();
+        private void OnStudentsFiltered(object sender, FilterEventArgs e)
+        {
+            if (!(e.Item is Student student))
+            {
+                e.Accepted = false;
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(_studentFilterText))
+                return;
+            if (student.Name == null || student.Surname == null || student.Patronymic == null)
+            {
+                e.Accepted = false;
+                return;
+            }
+            if (student.Name.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+            if (student.Surname.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+            if (student.Patronymic.Contains(_studentFilterText, StringComparison.OrdinalIgnoreCase)) return;
+
+            e.Accepted = false;
+        }
+        public ICollectionView SelectedGroupStudents => _selectedGroupStudents?.View;
         #endregion
 
         #region SelectedPageIndex
@@ -87,6 +135,19 @@ namespace WpfApp.ViewModels
             get => _status;
             set => Set(ref _status, value);
         }
+        #endregion
+
+        public DirectoryViewModel DiskRootDir { get; } = new DirectoryViewModel("c:\\");
+
+        #region SelectedDirectory : DirectoryViewModel - selected directory
+
+        private DirectoryViewModel _selectedDirectory;
+        public DirectoryViewModel SelectedDirectory 
+        { 
+            get => _selectedDirectory; 
+            set => Set(ref _selectedDirectory, value);
+        }
+
         #endregion
 
         /*--------------------------------------------------------------*/
@@ -151,6 +212,14 @@ namespace WpfApp.ViewModels
 
         /*--------------------------------------------------------------*/
 
+        public IEnumerable<Student> students_test => 
+            Enumerable.Range(1, App.IsDesignMode ? 10 : 100_000)
+            .Select(i => new Student
+            {
+                Name = $"Name {i}",
+                Surname = $"Surname {i}"
+            });
+
         public MainWindowViewModel()
         {
             Title = "New Application";
@@ -174,9 +243,9 @@ namespace WpfApp.ViewModels
             var student_index = 1;
             var students = Enumerable.Range(1, 15).Select(i => new Student
             {
-                Name = $"Name {i}",
-                Surname = $"Surname {i}",
-                Patronymic = $"Patronymic {i}",
+                Name = $"Name {student_index}",
+                Surname = $"Surname {student_index}",
+                Patronymic = $"Patronymic {student_index++}",
                 Birthday = DateTime.Now,
                 Rating = 0
             });
@@ -198,6 +267,11 @@ namespace WpfApp.ViewModels
 
             CompositeCollection = data_list.ToArray();
 
+            _selectedGroupStudents.Filter += OnStudentsFiltered;
+
+            //_selectedGroupStudents.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Descending));
+
+            //_selectedGroupStudents.GroupDescriptions.Add(new PropertyGroupDescription("Name"));
         }
     }
 }
