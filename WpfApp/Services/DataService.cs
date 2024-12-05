@@ -19,7 +19,7 @@ namespace WpfApp.Services
 
         private static IEnumerable<string> GetDataLines()
         {
-            using var dataStream = GetDataStream().Result;
+            using var dataStream = Task.Run(GetDataStream).Result;
             using var dataReader = new StreamReader(dataStream);
 
             while (!dataReader.EndOfStream)
@@ -43,14 +43,17 @@ namespace WpfApp.Services
         {
             var lines = GetDataLines()
                 .Skip(1)
+                .Select(line => line.Contains("Helena,") ? line.Replace("Helena,", "Helena") : line)
                 .Select(line => line.Split(","));
 
             foreach (var line in lines)
             {
                 var province = line[0].Trim();
                 var country = line[1].Trim(' ', '"');
-                var latitude = double.Parse(line[2]);
-                var longitude = double.Parse(line[3]);
+                double latitude;
+                latitude = double.TryParse(line[2], CultureInfo.InvariantCulture, out latitude) ? latitude : 0.00;
+                double longitude;
+                longitude = double.TryParse(line[3], CultureInfo.InvariantCulture, out longitude) ? longitude : 0.00;
                 var infectedCount = line.Skip(4).Select(int.Parse).ToArray();
 
                 yield return (province, country, (latitude, longitude), infectedCount);

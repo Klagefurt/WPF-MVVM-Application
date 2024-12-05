@@ -58,6 +58,9 @@
             </StatusBarItem>
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
+            <TabItem Header="Statistics">
+                
+            </TabItem>
             <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -205,7 +208,7 @@
                               HorizontalAlignment="Right" Width="4"/>
                 </Grid>-->
             </TabItem>
-            <TabItem Header="File System">
+            <TabItem Header="File System" Visibility="Collapsed">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
