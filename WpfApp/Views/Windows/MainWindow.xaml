@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
+        xmlns:view="clr-namespace:WpfApp.Views"
         xmlns:university="clr-namespace:WpfApp.Models.University"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:vm="clr-namespace:WpfApp.ViewModels"
@@ -59,7 +60,7 @@
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
             <TabItem Header="Statistics">
-                
+                <view:CountriesStatisticsView />
             </TabItem>
             <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
