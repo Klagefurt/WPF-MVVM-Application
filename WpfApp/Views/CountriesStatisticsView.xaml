@@ -22,7 +22,16 @@
                         <TextBlock Text="Load data"/>
                     </StackPanel>
                 </Button>
-                <ListBox ItemsSource="{Binding Countries}" />  
+                <ListBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="CountryInfo">
+                            <TextBlock>
+                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Location}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>  
             </DockPanel>
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Information">

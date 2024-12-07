@@ -12,6 +12,15 @@ namespace WpfApp.ViewModels
         private MainWindowViewModel MainWindowViewModel { get; }
         private DataService _DataService;
 
+        private CountryInfo _selectedCountry;
+
+        public CountryInfo SelectedCountry
+        {
+            get => _selectedCountry;
+            set => Set(ref _selectedCountry, value);
+        }
+
+
         #region Countries : IEnumerable<CountryInfo> - country statistics
 
         private IEnumerable<CountryInfo> _Countries;
