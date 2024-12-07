@@ -10,7 +10,7 @@ namespace WpfApp.Models
         {  
             get 
             {
-                if (_Location == null)
+                if (_Location != null)
                     return (Point)_Location;
 
                 if (ProvinceCounts == null)

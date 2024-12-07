@@ -12,7 +12,7 @@ namespace WpfApp.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
-        private readonly CountriesStatisticsViewModel _countriesStatisticsViewModel;
+        public CountriesStatisticsViewModel CountriesStatisticsViewModel { get; }
 
         /*--------------------------------------------------------------*/
 
@@ -221,7 +221,7 @@ namespace WpfApp.ViewModels
 
         public MainWindowViewModel()
         {
-            _countriesStatisticsViewModel = new CountriesStatisticsViewModel(this);
+            CountriesStatisticsViewModel = new CountriesStatisticsViewModel(this);
 
             Title = "New Application";
             Status = "Ready!";

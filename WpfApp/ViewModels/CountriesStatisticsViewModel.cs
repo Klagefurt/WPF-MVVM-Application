@@ -1,4 +1,4 @@
-﻿using System.Security.AccessControl;
+﻿using System.Windows;
 using System.Windows.Input;
 using WpfApp.Infrastructure.Commands;
 using WpfApp.Models;
@@ -14,11 +14,11 @@ namespace WpfApp.ViewModels
 
         #region Countries : IEnumerable<CountryInfo> - country statistics
 
-        private IEnumerable<CountryInfo> _countries;
+        private IEnumerable<CountryInfo> _Countries;
         public IEnumerable<CountryInfo> Countries
         {
-            get => _countries; 
-            private set => Set(ref _countries, value);
+            get => _Countries; 
+            private set => Set(ref _Countries, value);
         }
 
         #endregion
@@ -34,6 +34,29 @@ namespace WpfApp.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Constructor for debugging, do not start in release mode!
+        /// </summary>
+        public CountriesStatisticsViewModel() : this(null)
+        {
+            if (!App.IsDesignMode)
+                throw new InvalidOperationException("It is not debug mode!");
+
+            _Countries = Enumerable.Range(1, 10).Select(i => new CountryInfo
+            {
+                Name = $"Country {i}",
+                ProvinceCounts = Enumerable.Range(1, 10).Select(j => new PlaceInfo
+                {
+                    Name = $"Province {i}",
+                    Location = new Point(i, j),
+                    InfectedCounts = Enumerable.Range(1, 10).Select(k => new InfectedCount
+                    {
+                        Date = DateTime.Now,
+                        Count = k
+                    }).ToArray()
+                }).ToArray()
+            }).ToArray();
+        }
 
         public CountriesStatisticsViewModel(MainWindowViewModel mainWindowViewModel)
         {
@@ -41,6 +64,7 @@ namespace WpfApp.ViewModels
             _DataService = new DataService();
 
             RefreshDataCommand = new LambdaCommand(OnRefreshDataCommandExecuted);
+
         }
     }
 }

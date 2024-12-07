@@ -10,8 +10,7 @@
         xmlns:vm="clr-namespace:WpfApp.ViewModels"
         xmlns:cac="clr-namespace:WpfApp.Infrastructure.Commands"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
-        xmlns:sys="clr-namespace:System;assembly=System.Runtime" xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-        mc:Ignorable="d"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime" xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"       
         Title="{Binding Title}" Height="450" Width="800">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding CloseAppCommand}"/>
@@ -60,7 +59,7 @@
         </StatusBar>
         <TabControl x:Name="MyTabControl" SelectedIndex="{Binding SelectedPageIndex}">
             <TabItem Header="Statistics">
-                <view:CountriesStatisticsView />
+                <view:CountriesStatisticsView DataContext="{Binding CountriesStatisticsViewModel}" />
             </TabItem>
             <TabItem Header="Students" HorizontalAlignment="Left" Width="63" Height="20" VerticalAlignment="Center">
                 <Grid>
