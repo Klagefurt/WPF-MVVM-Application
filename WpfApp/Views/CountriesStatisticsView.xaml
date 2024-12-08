@@ -5,9 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:WpfApp"
+             xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
              xmlns:vm="clr-namespace:WpfApp.ViewModels"           
              d:DataContext="{d:DesignInstance vm:CountriesStatisticsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <conv:LocationPointToStr x:Key="LocationConverter"/>
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="230" />
@@ -25,9 +29,21 @@
                 <ListBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="CountryInfo">
+                            <!--<DataTemplate.Resources>
+                                <conv:LocationPointToStr x:Key="LocationConverter"/>
+                            </DataTemplate.Resources>-->
                             <TextBlock>
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="{Binding Location}" />
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Location, Converter={StaticResource LocationConverter}, StringFormat=({0})}"/>
+                                <!--<TextBlock>
+                                    <TextBlock.Text>
+                                        <Binding Path="Location" StringFormat="({0})">
+                                            <Binding.Converter>
+                                                <conv:LocationPointToStr />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </TextBlock.Text>
+                                </TextBlock>-->
                             </TextBlock>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -36,11 +52,20 @@
         </GroupBox>
         <GroupBox Grid.Column="1" Header="Information">
             <Grid>
+                <Grid.Resources>
+                    <conv:Ratio K="2" x:Key="Ratio2"/>
+                    <conv:Linear K="5" B="3" x:Key="Linear_K5_B3" />
+                </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+                <Slider Grid.Row="0" Name="ValueSlider" Maximum="100"
+                        ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
+                <TextBox Grid.Row="0" Margin="0,30,0,0" 
+                         VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
+                         Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource Ratio2}, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             </Grid>
         </GroupBox>
     </Grid>
