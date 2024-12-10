@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:WpfApp"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
              xmlns:vm="clr-namespace:WpfApp.ViewModels"           
              d:DataContext="{d:DesignInstance vm:CountriesStatisticsViewModel, IsDesignTimeCreatable=True}"
@@ -53,8 +54,20 @@
         <GroupBox Grid.Column="1" Header="Information">
             <Grid>
                 <Grid.Resources>
+                    <sys:Double x:Key="Value3">3</sys:Double>
+                    
                     <conv:Ratio K="2" x:Key="Ratio2"/>
-                    <conv:Linear K="5" B="3" x:Key="Linear_K5_B3" />
+                    <conv:Linear K="5" B="{StaticResource Value3}" x:Key="Linear_K5_B3" />
+
+                    <conv:CompositeConverter x:Key="TestCompositeConverter">
+                        <conv:CompositeConverter.First>
+                            <conv:Linear K="5"/>
+                        </conv:CompositeConverter.First>
+                        <conv:CompositeConverter.Second>
+                            <conv:Linear K="-3" B="10" />
+                        </conv:CompositeConverter.Second>
+                    </conv:CompositeConverter>
+
                 </Grid.Resources>
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -65,7 +78,7 @@
                         ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
                 <TextBox Grid.Row="0" Margin="0,30,0,0" 
                          VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
-                         Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource Ratio2}, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
+                         Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource TestCompositeConverter}, UpdateSourceTrigger=PropertyChanged}" ></TextBox>
             </Grid>
         </GroupBox>
     </Grid>
