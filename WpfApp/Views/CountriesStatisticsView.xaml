@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:WpfApp"
+             xmlns:common="clr-namespace:WpfApp.Infrastructure.Common"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
              xmlns:vm="clr-namespace:WpfApp.ViewModels"           
@@ -75,12 +76,20 @@
                 <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
                 
                 <StackPanel Grid.Row="0">
-                    <Slider Grid.Row="0" Name="Slider1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
-                    <Slider Grid.Row="0" Name="Slider2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
-                    <Slider Grid.Row="0" Name="Slider3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
+                    <Slider Grid.Row="0" Name="Slider1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
+                        Converter={conv:Linear K=5}}" />
+                    <Slider Grid.Row="0" Name="Slider2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
+                        Converter={conv:CompositeConverter First={conv:Add 5}, Second={conv:Ratio 7}}}" />
+                    <Slider Grid.Row="0" Name="Slider3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
+                        Converter={conv:CompositeConverter First={conv:CompositeConverter First={conv:Add 4},Second={conv:Ratio 3}}} }" />
                     <Slider Grid.Row="0" Name="Slider4" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
                 </StackPanel>
-                <ListBox Grid.Row="1">
+
+                <Border Grid.Row="1" DataContext="{common:StringToIntArray '111;112;113;114'}" >
+                    <ListBox ItemsSource="{Binding}"/>
+                </Border>
+
+                <!--<ListBox Grid.Row="1">
                     <ListBox.ItemsSource>
                         <MultiBinding Converter="{StaticResource ToArrayConverter}" >
                             <Binding ElementName="Slider1" Path="Value" />
@@ -89,7 +98,7 @@
                             <Binding ElementName="Slider4" Path="Value" />
                         </MultiBinding>
                     </ListBox.ItemsSource>
-                </ListBox>
+                </ListBox>-->
 
                 <!--<Slider Grid.Row="0" Name="ValueSlider" Maximum="100"
                         ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>

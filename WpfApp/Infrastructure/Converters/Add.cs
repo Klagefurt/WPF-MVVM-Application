@@ -3,15 +3,15 @@ using System.Windows.Markup;
 
 namespace WpfApp.Infrastructure.Converters
 {
-    [MarkupExtensionReturnType(typeof(Ratio))]
-    internal class Ratio : Converter
+    [MarkupExtensionReturnType(typeof(Add))]
+    internal class Add : Converter
     {
         [ConstructorArgument("K")]
-        public double K { get; set; } = 1;
+        public double B { get; set; } = 1;
 
-        public Ratio() { }
+        public Add() { }
 
-        public Ratio(double K) => this.K = K;
+        public Add(double B) => this.B = B;
 
         public override object Convert(object value, Type t, object p, CultureInfo c)
         {
@@ -19,7 +19,7 @@ namespace WpfApp.Infrastructure.Converters
 
             var x = System.Convert.ToDouble(value, c);
 
-            return x * K;
+            return x + B;
         }
 
         public override object ConvertBack(object value, Type t, object p, CultureInfo c)
@@ -28,7 +28,7 @@ namespace WpfApp.Infrastructure.Converters
 
             var x = System.Convert.ToDouble(value, c);
 
-            return x / K;
+            return x - B;
         }
     }
 }

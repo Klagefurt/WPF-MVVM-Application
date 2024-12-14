@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace WpfApp.Infrastructure.Converters
 {
-    internal abstract class Converter : IValueConverter
+    internal abstract class Converter : MarkupExtension, IValueConverter
     {
+        public override object ProvideValue(IServiceProvider serviceProvider) => this;
+
         public abstract object Convert(object v, Type t, object p, CultureInfo c);
 
         public virtual object ConvertBack(object v, Type t, object p, CultureInfo c)
