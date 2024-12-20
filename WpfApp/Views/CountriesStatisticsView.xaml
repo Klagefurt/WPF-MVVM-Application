@@ -85,7 +85,7 @@
                     <Slider Grid.Row="0" Name="Slider4" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
                 </StackPanel>
 
-                <Border Grid.Row="1" DataContext="{common:StringToIntArray '111;112;113;114'}" >
+                <Border Grid.Row="1" DataContext="{common:StringToIntArray '111;112;113;114;225'}" >
                     <ListBox ItemsSource="{Binding}"/>
                 </Border>
 

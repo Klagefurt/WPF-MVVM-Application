@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Markup;
 using WpfApp.Infrastructure.Commands;
 using WpfApp.Models.University;
 using WpfApp.ViewModels.Base;
@@ -10,6 +11,7 @@ using DataPoint = WpfApp.Models.DataPoint;
 
 namespace WpfApp.ViewModels
 {
+    [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
     internal class MainWindowViewModel : ViewModel
     {
         public CountriesStatisticsViewModel CountriesStatisticsViewModel { get; }
@@ -190,7 +192,8 @@ namespace WpfApp.ViewModels
 
         private void OnAppCloseCommandExecuted(object parameter)
         {
-            Application.Current.Shutdown();
+            (RootObject as Window)?.Close();
+            //Application.Current.Shutdown();
         }
         #endregion
 

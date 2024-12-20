@@ -11,13 +11,15 @@
         xmlns:cac="clr-namespace:WpfApp.Infrastructure.Commands"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime" xmlns:componentmodel="clr-namespace:System.ComponentModel;assembly=WindowsBase"       
-        Title="{Binding Title}" Height="450" Width="800">
+        Title="{Binding Title}" 
+        DataContext="{vm:MainWindowViewModel}"
+        Height="450" Width="800">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="Q" Command="{Binding CloseAppCommand}"/>
     </Window.InputBindings>
-    <Window.DataContext>
+    <!--<Window.DataContext>
         <vm:MainWindowViewModel/>
-    </Window.DataContext>
+    </Window.DataContext>-->
     <Window.Resources>
         <cac:CloseApplicationCommand x:Key="CloseApplicationCommand"/>
  
