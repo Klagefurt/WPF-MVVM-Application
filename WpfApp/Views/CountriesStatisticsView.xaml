@@ -6,6 +6,7 @@
              xmlns:fa5="http://schemas.fontawesome.com/icons/"
              xmlns:local="clr-namespace:WpfApp"
              xmlns:common="clr-namespace:WpfApp.Infrastructure.Common"
+             xmlns:m="clr-namespace:MapControl;assembly=MapControl.WPF"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
              xmlns:vm="clr-namespace:WpfApp.ViewModels"   
@@ -85,7 +86,14 @@
                                     ItemsSource="{Binding SelectedCountry.InfectedCounts}"
                                     DataFieldX="Date" DataFieldY="Count"/>
                 </oxy:Plot>
-                
+                <m:Map Grid.Row="1" ZoomLevel="4" MaxZoomLevel="21" 
+                       Center="{Binding SelectedCountry.Location, Converter={conv:PointToMapLocation}}">
+                    <m:MapScale Margin="4" Opacity="1" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <m:MapGraticule Opacity="0.3" Background="Transparent"/>
+                    <m:Map.MapLayer>
+                        <m:MapTileLayer TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                    </m:Map.MapLayer>
+                </m:Map>
                 
                 <!--<StackPanel Grid.Row="0">
                     <Slider Grid.Row="0" Name="Slider1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
@@ -117,6 +125,7 @@
                 <TextBox Grid.Row="0" Margin="0,30,0,0" 
                          VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
                          Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource TestCompositeConverter}, UpdateSourceTrigger=PropertyChanged}" ></TextBox>-->
+                
             </Grid>
         </GroupBox>
     </Grid>
