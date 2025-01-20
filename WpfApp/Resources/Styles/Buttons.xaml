@@ -3,7 +3,7 @@
                     xmlns:fa5="http://schemas.fontawesome.com/icons/">
 
     <Style x:Key="BtnBase" TargetType="Button">
-        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Background" Value="White" />
     </Style>
 
     <Style x:Key="PrimaryBtn" TargetType="Button" BasedOn="{StaticResource BtnBase}">

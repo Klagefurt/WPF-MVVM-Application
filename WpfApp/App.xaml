@@ -8,6 +8,9 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Buttons.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/GridSplitters.xaml"/>
+                <ResourceDictionary Source="Resources/Base/Brushes.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         

@@ -1,0 +1,132 @@
+﻿<UserControl x:Class="WpfApp.Views.CountriesStatisticsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:fa5="http://schemas.fontawesome.com/icons/"
+             xmlns:local="clr-namespace:WpfApp"
+             xmlns:common="clr-namespace:WpfApp.Infrastructure.Common"
+             xmlns:m="clr-namespace:MapControl;assembly=MapControl.WPF"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
+             xmlns:vm="clr-namespace:WpfApp.ViewModels"   
+             xmlns:oxy="http://oxyplot.org/wpf/contrib"
+             d:DataContext="{d:DesignInstance vm:CountriesStatisticsViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <conv:LocationPointToStr x:Key="LocationConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="230" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <GridSplitter />
+        <GroupBox Grid.Column="0" Header="Countries list">
+            <DockPanel>
+                <Button DockPanel.Dock="Top"   Command="{Binding RefreshDataCommand}">
+                    <StackPanel Orientation="Horizontal">
+                        <fa5:ImageAwesome Height="12" Icon="Solid_ArrowDown" Margin="0,0,3,0"/>
+                        <TextBlock Text="Load data"/>
+                    </StackPanel>
+                </Button>
+                <ListBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="CountryInfo">
+                            <!--<DataTemplate.Resources>
+                                <conv:LocationPointToStr x:Key="LocationConverter"/>
+                            </DataTemplate.Resources>-->
+                            <TextBlock>
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text="{Binding Location, Converter={StaticResource LocationConverter}, StringFormat=({0})}"/>
+                                <!--<TextBlock>
+                                    <TextBlock.Text>
+                                        <Binding Path="Location" StringFormat="({0})">
+                                            <Binding.Converter>
+                                                <conv:LocationPointToStr />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </TextBlock.Text>
+                                </TextBlock>-->
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>  
+            </DockPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Information">
+            <Grid>
+                <Grid.Resources>
+                    <sys:Double x:Key="Value3">3</sys:Double>
+                   
+                    <conv:Ratio K="2" x:Key="Ratio2"/>
+                    <conv:Linear K="5" B="{StaticResource Value3}" x:Key="Linear_K5_B3" />
+                    <conv:CompositeConverter x:Key="TestCompositeConverter">
+                        <conv:CompositeConverter.First>
+                            <conv:Linear K="5"/>
+                        </conv:CompositeConverter.First>
+                        <conv:CompositeConverter.Second>
+                            <conv:Linear K="-3" B="10" />
+                        </conv:CompositeConverter.Second>
+                    </conv:CompositeConverter>
+                    <conv:ToArray x:Key="ToArrayConverter"/>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+
+                <oxy:Plot Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" Title="Number" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash" />
+                        <oxy:DateTimeAxis Position="Bottom" Title="Data" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash" />
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries StrokeThickness="2" Color="red" 
+                                    ItemsSource="{Binding SelectedCountry.InfectedCounts}"
+                                    DataFieldX="Date" DataFieldY="Count"/>
+                </oxy:Plot>
+                <m:Map Grid.Row="1" ZoomLevel="4" MaxZoomLevel="21" 
+                       Center="{Binding SelectedCountry.Location, Converter={conv:PointToMapLocation}}">
+                    <m:MapScale Margin="4" Opacity="1" Background="Transparent" VerticalAlignment="Bottom" HorizontalAlignment="Left"/>
+                    <m:MapGraticule Opacity="0.3" Background="Transparent"/>
+                    <m:Map.MapLayer>
+                        <m:MapTileLayer TileSource="https://tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+                    </m:Map.MapLayer>
+                </m:Map>
+                
+                <!--<StackPanel Grid.Row="0">
+                    <Slider Grid.Row="0" Name="Slider1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
+                        Converter={conv:Linear K=5}}" />
+                    <Slider Grid.Row="0" Name="Slider2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
+                        Converter={conv:CompositeConverter First={conv:Add 5}, Second={conv:Ratio 7}}}" />
+                    <Slider Grid.Row="0" Name="Slider3" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self},
+                        Converter={conv:CompositeConverter First={conv:CompositeConverter First={conv:Add 4},Second={conv:Ratio 3}}} }" />
+                    <Slider Grid.Row="0" Name="Slider4" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}" />
+                </StackPanel>
+
+                <Border Grid.Row="1" DataContext="{common:StringToIntArray '111;112;113;114;225'}" >
+                    <ListBox ItemsSource="{Binding}"/>
+                </Border>-->
+
+                <!--<ListBox Grid.Row="1">
+                    <ListBox.ItemsSource>
+                        <MultiBinding Converter="{StaticResource ToArrayConverter}" >
+                            <Binding ElementName="Slider1" Path="Value" />
+                            <Binding ElementName="Slider2" Path="Value" />
+                            <Binding ElementName="Slider3" Path="Value" />
+                            <Binding ElementName="Slider4" Path="Value" />
+                        </MultiBinding>
+                    </ListBox.ItemsSource>
+                </ListBox>-->
+
+                <!--<Slider Grid.Row="0" Name="ValueSlider" Maximum="100"
+                        ToolTip="{Binding Value, RelativeSource={RelativeSource Self}}"/>
+                <TextBox Grid.Row="0" Margin="0,30,0,0" 
+                         VerticalAlignment="Top" HorizontalAlignment="Left" Width="200"
+                         Text="{Binding Value, ElementName=ValueSlider, Converter={StaticResource TestCompositeConverter}, UpdateSourceTrigger=PropertyChanged}" ></TextBox>-->
+                
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>
