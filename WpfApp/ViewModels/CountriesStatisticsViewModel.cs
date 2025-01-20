@@ -20,7 +20,6 @@ namespace WpfApp.ViewModels
             set => Set(ref _selectedCountry, value);
         }
 
-
         #region Countries : IEnumerable<CountryInfo> - country statistics
 
         private IEnumerable<CountryInfo> _Countries;

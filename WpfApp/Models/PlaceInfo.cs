@@ -6,7 +6,7 @@ namespace WpfApp.Models
     {
         public string Name { get; set; }
         public virtual Point Location { get; set; }
-        public IEnumerable<InfectedCount> InfectedCounts { get; set; }
+        public virtual IEnumerable<InfectedCount> InfectedCounts { get; set; }
 
         public override string ToString()
         {

@@ -8,7 +8,8 @@
              xmlns:common="clr-namespace:WpfApp.Infrastructure.Common"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              xmlns:conv="clr-namespace:WpfApp.Infrastructure.Converters"
-             xmlns:vm="clr-namespace:WpfApp.ViewModels"           
+             xmlns:vm="clr-namespace:WpfApp.ViewModels"   
+             xmlns:oxy="http://oxyplot.org/wpf/contrib"
              d:DataContext="{d:DesignInstance vm:CountriesStatisticsViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -74,8 +75,19 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <GridSplitter HorizontalAlignment="Stretch" VerticalAlignment="Bottom" />
+
+                <oxy:Plot Grid.Row="0">
+                    <oxy:Plot.Axes>
+                        <oxy:LinearAxis Position="Left" Title="Number" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash" />
+                        <oxy:DateTimeAxis Position="Bottom" Title="Data" MajorGridlineStyle="Solid" MinorGridlineStyle="Dash" />
+                    </oxy:Plot.Axes>
+                    <oxy:LineSeries StrokeThickness="2" Color="red" 
+                                    ItemsSource="{Binding SelectedCountry.InfectedCounts}"
+                                    DataFieldX="Date" DataFieldY="Count"/>
+                </oxy:Plot>
                 
-                <StackPanel Grid.Row="0">
+                
+                <!--<StackPanel Grid.Row="0">
                     <Slider Grid.Row="0" Name="Slider1" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
                         Converter={conv:Linear K=5}}" />
                     <Slider Grid.Row="0" Name="Slider2" Maximum="100" ToolTip="{Binding Value, RelativeSource={RelativeSource Self}, 
@@ -87,7 +99,7 @@
 
                 <Border Grid.Row="1" DataContext="{common:StringToIntArray '111;112;113;114;225'}" >
                     <ListBox ItemsSource="{Binding}"/>
-                </Border>
+                </Border>-->
 
                 <!--<ListBox Grid.Row="1">
                     <ListBox.ItemsSource>
