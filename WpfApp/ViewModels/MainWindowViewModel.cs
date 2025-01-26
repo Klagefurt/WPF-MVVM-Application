@@ -1,12 +1,9 @@
-﻿using OxyPlot;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using WpfApp.Infrastructure.Commands;
-using WpfApp.Models;
 using WpfApp.Models.University;
 using WpfApp.ViewModels.Base;
 using DataPoint = WpfApp.Models.DataPoint;
